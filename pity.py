@@ -1,10 +1,10 @@
 import os
+import sys
 from pit.prov import load_prov
 
 from flask import Flask, jsonify, render_template
 app = Flask(__name__)
 
-#STD_DIR = "../gamingcorpus/corpus/neogaf"
 STD_DIR = "../pit/testdata"
 
 def path(filename):
@@ -44,8 +44,6 @@ def rootdirectory():
                 origins = prov.get_origins()
             else:
                 origins = None
-            print(origins)
-
             if prov:
                 prov = prov.to_json()
 
@@ -54,8 +52,6 @@ def rootdirectory():
                 "prov": prov,
                 "origins": origins
             })
-        
-        print(provs)
 
         return render_template("dir.html", abs_dir=abs_dir, files=provs)
     else:
@@ -63,4 +59,6 @@ def rootdirectory():
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        STD_DIR = sys.argv[1]
     app.run(debug=True)

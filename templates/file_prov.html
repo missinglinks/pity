@@ -14,52 +14,59 @@
 </head>
 <body>
 
-    <div class="page-header">
-        <h1>PITy</h1>
+    <div class="col-sm-11">
+
+        <div class="page-header">
+            <h1>PITy</h1>
+        </div>
+
+        <h3><a href="/">{{abs_dir}}</a> > {{filename}}</h3>
+
+
+        <ul class="list-group">
+            <li class="list-group-item">Origin: {{prov.origin}}</li>
+            <li class="list-group-item">Date: {{prov.date}}</li>
+            <li class="list-group-item">Agent: {{prov.agent}}</li>
+            <li class="list-group-item">Description: {{prov.desc}}</li>
+            {%if prov.sources is not none %}
+            <li class="list-group-item  list-group-item-warning">
+                
+                Sources:
+                    <ul class="list-group">
+                    {% set count = [1] %}
+
+                    {% for source in prov.sources recursive %}
+                        
+                        <li class="list-group-item">Origin: {{source.origin}}</li>
+                        <li class="list-group-item">Date: {{source.date}}</li>
+                        <li class="list-group-item">Agent: {{source.agent}}</li>
+                        <li class="list-group-item">Description: {{source.desc}}</li>
+
+                        {% if count[0] % 2 == 0 %}
+                        <li class="list-group-item  list-group-item-warning">
+                        {% else %}
+                        <li class="list-group-item  list-group-item-info">
+                        {% endif %}                        
+                            Sources:
+                            {% if source.sources %}
+                            <ul class="list-group">
+                                {% if count.append(count.pop() + 1) %}{% endif %}
+                                {{ loop(source.sources) }}
+                            </ul>
+                            {% else %}
+                            None
+                            {% endif %}
+                        </li>
+                        <li style="list-style: none; height:20px;"> </li>
+                    {% endfor %}
+                    </ul>
+
+
+            </li>
+            {% endif %}
+        </ul>
+
     </div>
-
-    <h3><a href="/">{{abs_dir}}</a> > {{filename}}</h3>
-
-
-    <ul class="list-group">
-        <li class="list-group-item">Origin: {{prov.origin}}</li>
-        <li class="list-group-item">Date: {{prov.date}}</li>
-        <li class="list-group-item">Agent: {{prov.agent}}</li>
-        <li class="list-group-item">Description: {{prov.desc}}</li>
-        {%if prov.sources is not none %}
-        <li class="list-group-item  list-group-item-warning">
-            
-            Sources:
-                <ul class="list-group">
-                {% set count = [0] %}
-
-                {% for source in prov.sources recursive %}
-                     {% if count.append(count.pop() + 1) %}{% endif %}
-                    <li class="list-group-item">Origin: {{source.origin}}</li>
-                    <li class="list-group-item">Date: {{source.date}}</li>
-                    <li class="list-group-item">Agent: {{source.agent}}</li>
-                    <li class="list-group-item">Description: {{source.desc}}</li>
-
-                    {% if count[0] % 2 == 0 %}
-                    <li class="list-group-item  list-group-item-warning">
-                    {% else %}
-                    <li class="list-group-item  list-group-item-info">
-                    {% endif %}                        
-                        Sources:
-                        {% if source.sources %}
-                        <ul class="list-group">
-                            {{ loop(source.sources) }}
-                        </ul>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-                </ul>
-            </div>
-
-        </li>
-        {% endif %}
-    </ul>
-
   
 </body>
 

@@ -14,32 +14,34 @@
 
 </head>
 <body>
-    <div class="page-header">
-        <h1>PITy</h1>
+    <div class="col-sm-11">
+        <div class="page-header">
+            <h1>PITy</h1>
+        </div>
+
+        <h3>{{abs_dir}}</h3>
+        <table class="table striped">
+            <tr>
+                <th>Filename</th>
+                <th>Last Process</th>
+                <th>Last Update</th>
+                <th>Origins</th>
+            </tr>
+            {% for file in files %}
+            <tr>
+                <td><a href="/{{file.name}}">{{ file.name }}</a></td>
+                {% if file.prov is not none %}
+                <td>{{ file.prov.desc }}</td>
+                <td>{{ file.prov.date }}</td>
+                <td>{{ file.origins }}</td>
+                {% else %}
+                <td colspan="3" class="bg-warning">No provenance information available</td>
+                {% endif %}
+            </tr>
+            {% endfor %}        
+        </table>   
+    
     </div>
-
-    <h3>{{abs_dir}}</h3>
-    <table class="table striped">
-        <tr>
-            <th>Filename</th>
-            <th>Last Process</th>
-            <th>Last Update Process</th>
-            <th>Origins</th>
-        </tr>
-        {% for file in files %}
-        <tr>
-            <td><a href="/{{file.name}}">{{ file.name }}</a></td>
-            {% if file.prov is not none %}
-            <td>{{ file.prov.desc }}</td>
-            <td>{{ file.prov.date }}</td>
-            <td>{{ file.origins }}</td>
-            {% else %}
-            <td colspan="3" class="bg-warning">No provenance information available</td>
-            {% endif %}
-        </tr>
-        {% endfor %}        
-    </table>   
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
